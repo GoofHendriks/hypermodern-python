@@ -10,7 +10,7 @@ def get_api_url(lang="en"):
 @click.command()
 @click.option("--count", default=1, type=int, help="Number of articles to fetch (default: 1)")
 @click.option("--lang", default="en", help="Wikipedia language code (e.g., 'en', 'fr', 'es')")
-@click.version_option(version=__version__)
+@click.version_option(version=__version__, prog_name="hypermodern-python")
 def main(count, lang):
     """The hypermodern Python project."""
     API_URL = get_api_url(lang)

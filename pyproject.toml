@@ -25,3 +25,9 @@ requests = "^2.32.3"
 
 [tool.poetry.scripts]
 hypermodern-python = "hypermodern_python.console:main"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.4"
+pytest-mock = "^3.14.0"
+responses = "^0.25.6"
+
