@@ -1,6 +1,5 @@
 import click.testing
 import pytest
-import responses
 
 from hypermodern_python import console
 
@@ -8,7 +7,16 @@ from hypermodern_python import console
 def runner():
     return click.testing.CliRunner()
 
-def test_main_succeeds(runner):
+@pytest.fixture
+def mock_requests_get(mocker):
+    mock = mocker.patch("requests.get")
+    mock.return_value.__enter__.return_value.json.return_value = {
+        "title": "Lorem Ipsum",
+        "extract": "Lorem ipsum dolor sit amet",
+    }
+    return mock
+
+def test_main_succeeds(runner, mock_requests_get):
     result = runner.invoke(console.main)
     assert result.exit_code == 0
 
@@ -17,21 +25,20 @@ def test_version(runner):
     assert result.exit_code == 0
     assert "hypermodern-python, version 0.1.0" in result.output
 
-@responses.activate
-def test_random_summary(runner):
-    # Mock the Wikipedia API response
-    summary_data = {
-        "title": "Python (programming language)",
-        "extract": "Python is a high-level, general-purpose programming language."
-    }
-    responses.add(
-        responses.GET,
-        "https://en.wikipedia.org/api/rest_v1/page/random/summary",
-        json=summary_data,
-        status=200
-    )
-
+def test_main_prints_title(runner, mock_requests_get):
     result = runner.invoke(console.main)
-    assert result.exit_code == 0
-    assert "Python (programming language)" in result.output
-    assert "Python is a high-level, general-purpose programming language." in result.output
+    assert "Lorem Ipsum" in result.output
+
+def test_main_invokes_requests_get(runner, mock_requests_get):
+    runner.invoke(console.main)
+    assert mock_requests_get.called
+
+def test_main_uses_en_wikipedia_org(runner, mock_requests_get):
+    runner.invoke(console.main)
+    args, _ = mock_requests_get.call_args
+    assert "en.wikipedia.org" in args[0]
+
+def test_main_fails_on_request_error(runner, mock_requests_get):
+    mock_requests_get.side_effect = Exception("Boom")
+    result = runner.invoke(console.main)
+    assert result.exit_code == 1
