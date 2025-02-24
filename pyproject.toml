@@ -1,0 +1,27 @@
+[project]
+name = "hypermodern-python"
+version = "0.1.0"
+description = "The hypermodern Python project"
+authors = [{name = "Goof Hendriks", email = "goofhendriks@hotmail.com"}]
+license = "MIT"
+readme = "README.md"
+keywords = ["hypermodern"]
+requires-python = "^3.12"
+
+[project.urls]
+Homepage = "https://github.com/goofhendriks/hypermodern-python"
+Repository = "https://github.com/goofhendriks/hypermodern-python"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+packages = [{include = "hypermodern_python", from = "src"}]
+
+[tool.poetry.dependencies]
+click = "^8.1.8"
+requests = "^2.32.3"
+
+[tool.poetry.scripts]
+hypermodern-python = "hypermodern_python.console:main"
