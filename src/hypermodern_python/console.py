@@ -1,11 +1,9 @@
 import textwrap
 import click
 import requests
-from . import __version__
 
-def get_api_url(lang="en"):
-    """Generate Wikipedia API URL for a given language."""
-    return f"https://{lang}.wikipedia.org/api/rest_v1/page/random/summary"
+from . import __version__
+from .wikipedia import random_page, get_api_url  # Import both functions
 
 @click.command()
 @click.option("--count", default=1, type=int, help="Number of articles to fetch (default: 1)")
@@ -13,13 +11,10 @@ def get_api_url(lang="en"):
 @click.version_option(version=__version__, prog_name="hypermodern-python")
 def main(count, lang):
     """The hypermodern Python project."""
-    API_URL = get_api_url(lang)
-
     for i in range(count):
+        # Update API_URL dynamically in wikipedia.py via get_api_url
         try:
-            with requests.get(API_URL) as response:
-                response.raise_for_status()
-                data = response.json()
+            data = random_page()
         except requests.exceptions.RequestException as e:
             click.secho(f"Error: Could not fetch article - {e}", fg="red")
             return
