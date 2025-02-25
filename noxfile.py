@@ -54,11 +54,6 @@ def safety(session):
         session.run("safety", "scan", f"--file={requirements.name}", "--full-report")
 
 
-import nox
-import tempfile
-import os
-
-
 def install_with_constraints(session, *args, **kwargs):
     """Install dependencies using Poetry's constraints file."""
     requirements_path = "requirements.txt"
@@ -76,7 +71,7 @@ def install_with_constraints(session, *args, **kwargs):
                 silent=True,  # Prevent excessive logging
             )
             requirements_path = requirements.name
-    except:
+    except Exception:
         session.log(
             "⚠️ Failed to export dependencies with Poetry. Using existing requirements.txt."
         )
