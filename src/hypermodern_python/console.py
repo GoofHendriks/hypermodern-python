@@ -6,9 +6,14 @@ import sys  # ✅ Import sys to manually exit
 from . import __version__
 from .wikipedia import random_page
 
+
 @click.command()
-@click.option("--count", default=1, type=int, help="Number of articles to fetch (default: 1)")
-@click.option("--lang", default="en", help="Wikipedia language code (e.g., 'en', 'fr', 'es')")
+@click.option(
+    "--count", default=1, type=int, help="Number of articles to fetch (default: 1)"
+)
+@click.option(
+    "--lang", default="en", help="Wikipedia language code (e.g., 'en', 'fr', 'es')"
+)
 @click.version_option(version=__version__, prog_name="hypermodern-python")
 def main(count, lang):
     """The hypermodern Python project."""
@@ -37,6 +42,6 @@ def main(count, lang):
         if i < count - 1:
             click.echo("\n" + "-" * 40 + "\n")
 
+
 if __name__ == "__main__":
     main()
-
