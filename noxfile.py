@@ -3,11 +3,14 @@ import tempfile
 
 nox.options.sessions = "lint", "safety", "tests"
 
+
 @nox.session(python=["3.13.2"])
 def tests(session):
     args = session.posargs or ["--cov", "-m", "not e2e"]
     session.run("poetry", "install", external=True)
-    install_with_constraints(session, "pytest", "pytest-cov", "pytest-mock", "coverage[toml]")
+    install_with_constraints(
+        session, "pytest", "pytest-cov", "pytest-mock", "coverage[toml]"
+    )
     session.run("pytest", *args)
 
 
@@ -17,7 +20,14 @@ locations = "src", "tests", "noxfile.py"
 @nox.session(python=["3.13.2"])
 def lint(session):
     args = session.posargs or locations
-    install_with_constraints(session, "flake8", "flake8-bandit", "flake8-black", "flake8-bugbear", "flake8-import-order")
+    install_with_constraints(
+        session,
+        "flake8",
+        "flake8-bandit",
+        "flake8-black",
+        "flake8-bugbear",
+        "flake8-import-order",
+    )
     session.run("flake8", *args)
 
 
@@ -48,6 +58,7 @@ import nox
 import tempfile
 import os
 
+
 def install_with_constraints(session, *args, **kwargs):
     """Install dependencies using Poetry's constraints file."""
     requirements_path = "requirements.txt"
@@ -66,8 +77,9 @@ def install_with_constraints(session, *args, **kwargs):
             )
             requirements_path = requirements.name
     except:
-        session.log("⚠️ Failed to export dependencies with Poetry. Using existing requirements.txt.")
+        session.log(
+            "⚠️ Failed to export dependencies with Poetry. Using existing requirements.txt."
+        )
 
     # Install dependencies with constraints
     session.install(f"--constraint={requirements_path}", *args, **kwargs)
-
