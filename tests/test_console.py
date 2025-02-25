@@ -1,6 +1,7 @@
+from unittest.mock import MagicMock
+
 import click.testing
 import pytest
-from unittest.mock import MagicMock
 
 from hypermodern_python import console
 

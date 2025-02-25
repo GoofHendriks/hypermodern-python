@@ -1,7 +1,8 @@
+import sys
 import textwrap
+
 import click
 import requests
-import sys  # ✅ Import sys to manually exit
 
 from . import __version__
 from .wikipedia import random_page

@@ -1,6 +1,6 @@
 import nox
 
-nox.options.sessions = "lint", "tests"
+nox.options.sessions = "lint", "safety", "tests"
 
 
 @nox.session(python=["3.13.2"])
@@ -16,7 +16,7 @@ locations = "src", "tests", "noxfile.py"
 @nox.session(python=["3.13.2"])
 def lint(session):
     args = session.posargs or locations
-    session.install("flake8", "flake8-black")
+    session.install("flake8", "flake8-bandit", "flake8-black", "flake8-bugbear", "flake8-import-order")
     session.run("flake8", *args)
 
 
@@ -25,3 +25,21 @@ def black(session):
     args = session.posargs or locations
     session.install("black")
     session.run("black", *args)
+
+import tempfile
+
+
+@nox.session(python="3.13.2")
+def safety(session):
+    with tempfile.NamedTemporaryFile() as requirements:
+        session.run(
+            "poetry",
+            "export",
+            "--dev",
+            "--format=requirements.txt",
+            "--without-hashes",
+            f"--output={requirements.name}",
+            external=True,
+        )
+        session.install("safety")
+        session.run("safety", "scan", f"--file={requirements.name}", "--full-report")

@@ -308,6 +308,18 @@ files = [
 ]
 
 [[package]]
+name = "insecure-package"
+version = "0.1.0"
+description = "Insecure Package, don't use it"
+optional = false
+python-versions = "*"
+groups = ["main"]
+files = [
+    {file = "insecure-package-0.1.0.tar.gz", hash = "sha256:4da7b05a052f19841c1efbd4cc8edea9a78aaaa295360923cb2b052b547b7877"},
+    {file = "insecure_package-0.1.0-py2.py3-none-any.whl", hash = "sha256:4d9485a53c970c892f887e10fd99e97b82848ac9010e79bc715585e1a6a74422"},
+]
+
+[[package]]
 name = "nox"
 version = "2023.4.22"
 description = "Flexible test automation."
@@ -495,4 +507,4 @@ test = ["covdefaults (>=2.3)", "coverage (>=7.2.7)", "coverage-enable-subprocess
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.12"
-content-hash = "25192f578c95046e4a9b6c5c6e8d2384c94ced528d6051033b3213aaef35bcad"
+content-hash = "214e1c76de47220b395e05cb570a2eaa48a5e96b51f137debe509313fdf4dfa8"
